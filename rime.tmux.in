@@ -1,0 +1,30 @@
+#!/usr/bin/env -S tmux source
+bind-key -T${key-table} ${key} {
+  display-popup -T${title} -b${popup-border-lines} -h${height} -w${width} -x${x} -y${y} \
+  "${curdir}/${targetfile} \
+  --shared_data_dir ${shared_data_dir} \
+  --user_data_dir ${user_data_dir} \
+  --log_dir ${log_dir} \
+  --distribution_name ${distribution_name} \
+  --distribution_code_name ${distribution_code_name} \
+  --distribution_version ${distribution_version} \
+  --app_name ${app_name} \
+  --min_log_level ${min_log_level} \
+  --left ${left} \
+  --right ${right} \
+  --left_sep ${left_sep} \
+  --right_sep ${right_sep} \
+  --cursor ${cursor} \
+  --index1 ${index 1} \
+  --index2 ${index 2} \
+  --index3 ${index 3} \
+  --index4 ${index 4} \
+  --index5 ${index 5} \
+  --index6 ${index 6} \
+  --index7 ${index 7} \
+  --index8 ${index 8} \
+  --index9 ${index 9} \
+  --index0 ${index 10} \
+  "
+}
+# ex: filetype=tmux

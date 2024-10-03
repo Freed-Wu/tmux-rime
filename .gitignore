@@ -1,0 +1,4 @@
+*.tmux
+.xmake/
+build/
+.cache/
