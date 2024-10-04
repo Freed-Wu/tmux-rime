@@ -278,16 +278,16 @@ do
     add_files("*.c")
     add_packages("rime")
     set_configdir("$(projectdir)")
+    add_configfiles("rime.tmux.in")
     set_configvar("curdir", "$(curdir)")
     for _, o in ipairs(opts) do
-        set_configvar(opt, get_config(o))
+        set_configvar(o, get_config(o))
     end
     for _, o in ipairs(quoted_opts) do
         set_configvar(o, get_config(o), { quote = true })
     end
     on_config(
         function(target)
-            target:add("configfiles", "rime.tmux.in")
             target:set("configvar", "targetfile", target:targetfile())
         end
     )
