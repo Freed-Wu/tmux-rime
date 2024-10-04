@@ -165,6 +165,35 @@ void draw_ui(struct UI ui, RimeContext context) {
          context.menu.page_no ? ui.left : left_padding, str);
 }
 
+int translate(int *c) {
+  int mask = 0;
+  if (!isprint(*c)) {
+    if (*c == '\r') {
+      *c = 65293;
+    } else if (*c == '\x7f' || *c == '\b') {
+      *c = 65288;
+    } else if (*c == '\0') {
+      mask += 1 << 2;
+      *c = ' ';
+    } else if (*c == '\x5f') {
+      mask += 1 << 2;
+      *c = '-';
+    } else if (*c == '\x5e') {
+      mask += 1 << 2;
+      *c = '6';
+    } else if (*c == '\t') {
+      *c = 65289;
+    } else {
+      mask += 1 << 2;
+      *c ^= 0x40;
+      if (isupper(*c)) {
+        *c = tolower(*c);
+      }
+    }
+  }
+  return mask;
+}
+
 int main(int argc, char *argv[]) {
   int c;
   RIME_STRUCT(RimeTraits, traits);
@@ -282,30 +311,7 @@ int main(int argc, char *argv[]) {
       feed_key(c);
       continue;
     }
-    if (!isprint(c)) {
-      if (c == '\r') {
-        c = 65293;
-      } else if (c == '\x7f' || c == '\b') {
-        c = 65288;
-      } else if (c == '\0') {
-        mask += 1 << 2;
-        c = ' ';
-      } else if (c == '\x5f') {
-        mask += 1 << 2;
-        c = '-';
-      } else if (c == '\x5e') {
-        mask += 1 << 2;
-        c = '6';
-      } else if (c == '\t') {
-        c = 65289;
-      } else {
-        mask += 1 << 2;
-        c ^= 0x40;
-        if (isupper(c)) {
-          c = tolower(c);
-        }
-      }
-    }
+    mask += translate(&c);
     if (!RimeProcessKey(session_id, c, mask)) {
       if (mask == 0)
         feed_key(c);
