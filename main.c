@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <getopt.h>
 #include <libgen.h>
+#include <locale.h>
 #include <rime_api.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -175,6 +176,7 @@ int main(int argc, char *argv[]) {
   if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
     err(errno, NULL);
 
+  setlocale(LC_CTYPE, "");
   while ((c = getopt_long(argc, argv, shortopts, longopts, NULL)) != -1) {
     switch (c) {
     case 'V':
