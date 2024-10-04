@@ -92,11 +92,6 @@ int feed_keys(char *src) {
   return ret;
 }
 
-int feed_key(char c) {
-  char src[2] = {c};
-  return feed_keys(src);
-}
-
 struct UI {
   char *left;
   char *right;
@@ -308,14 +303,17 @@ int main(int argc, char *argv[]) {
       }
     }
     if (menu_is_empty && !isprint(c)) {
-      feed_key(c);
+      char src[2] = {c};
+      feed_keys(src);
       continue;
     }
     mask += translate(&c);
     menu_is_empty = true;
     if (!RimeProcessKey(session_id, c, mask)) {
-      if (mask == 0)
-        feed_key(c);
+      if (mask == 0) {
+        char src[2] = {c};
+        feed_keys(src);
+      }
       continue;
     }
     RIME_STRUCT(RimeContext, context);
