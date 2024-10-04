@@ -189,6 +189,80 @@ int translate(int *c) {
   return mask;
 }
 
+bool process_key(RimeSessionId session_id, int c, int mask, struct UI ui,
+                 int (*feed_keys)(char *)) {
+  bool menu_is_empty = true;
+  if (!RimeProcessKey(session_id, c, mask)) {
+    if (mask == 0) {
+      char src[2] = {c};
+      feed_keys(src);
+    }
+    return menu_is_empty;
+  }
+  RIME_STRUCT(RimeContext, context);
+  if (!RimeGetContext(session_id, &context)) {
+    fputs("cannot get context", stderr);
+    return menu_is_empty;
+  }
+  if (context.menu.num_candidates == 0) {
+    RIME_STRUCT(RimeCommit, commit);
+    if (RimeCommitComposition(session_id)) {
+      if (!RimeGetCommit(session_id, &commit)) {
+        fputs("cannot get commit", stderr);
+        return menu_is_empty;
+      }
+      feed_keys(commit.text);
+    }
+    if (!RimeFreeCommit(&commit)) {
+      fputs("cannot free commit", stderr);
+      return menu_is_empty;
+    }
+  } else
+    menu_is_empty = false;
+  draw_ui(ui, context);
+  if (!RimeFreeContext(&context)) {
+    fputs("cannot free context", stderr);
+    return menu_is_empty;
+  }
+  return menu_is_empty;
+}
+
+void loop(RimeTraits traits, struct UI ui, int (*feed_keys)(char *),
+          char quit) {
+  RimeSetup(&traits);
+  RimeInitialize(&traits);
+  RimeSessionId session_id = RimeCreateSession();
+  if (session_id == 0)
+    err(errno, "cannot create session");
+
+  bool menu_is_empty = true;
+  while (true) {
+    int mask = 0;
+    int c = getchar();
+    if (c == quit)
+      break;
+    if (c == '\e') {
+      mask += 1 << 3;
+      char src[3] = {c, getchar()};
+      c = src[1];
+      if (menu_is_empty && !isprint(c)) {
+        feed_keys(src);
+        continue;
+      }
+    }
+    if (menu_is_empty && !isprint(c)) {
+      char src[2] = {c};
+      feed_keys(src);
+      continue;
+    }
+    mask += translate(&c);
+    menu_is_empty = process_key(session_id, c, mask, ui, feed_keys);
+  }
+
+  if (RimeDestroySession(session_id) == False)
+    err(errno, "cannot destroy session");
+}
+
 int main(int argc, char *argv[]) {
   int c;
   RIME_STRUCT(RimeTraits, traits);
@@ -282,69 +356,10 @@ int main(int argc, char *argv[]) {
       return -1;
     }
   }
-  RimeSetup(&traits);
-  RimeInitialize(&traits);
-  RimeSessionId session_id = RimeCreateSession();
-  if (session_id == 0)
-    err(errno, "cannot create session");
-
   printf("\e[%s q", ui.cursor);
-  bool menu_is_empty = true;
-  while (true) {
-    int mask = 0;
-    c = getchar();
-    if (c == '\e') {
-      mask += 1 << 3;
-      char src[3] = {c, getchar()};
-      c = src[1];
-      if (menu_is_empty && !isprint(c)) {
-        feed_keys(src);
-        continue;
-      }
-    }
-    if (menu_is_empty && !isprint(c)) {
-      char src[2] = {c};
-      feed_keys(src);
-      continue;
-    }
-    mask += translate(&c);
-    menu_is_empty = true;
-    if (!RimeProcessKey(session_id, c, mask)) {
-      if (mask == 0) {
-        char src[2] = {c};
-        feed_keys(src);
-      }
-      continue;
-    }
-    RIME_STRUCT(RimeContext, context);
-    if (!RimeGetContext(session_id, &context)) {
-      fputs("cannot get context", stderr);
-      continue;
-    }
-    if (context.menu.num_candidates == 0) {
-      RIME_STRUCT(RimeCommit, commit);
-      if (RimeCommitComposition(session_id)) {
-        if (!RimeGetCommit(session_id, &commit)) {
-          fputs("cannot get commit", stderr);
-          continue;
-        }
-        feed_keys(commit.text);
-      }
-      if (!RimeFreeCommit(&commit)) {
-        fputs("cannot free commit", stderr);
-        continue;
-      }
-    } else
-      menu_is_empty = false;
-    draw_ui(ui, context);
-    if (!RimeFreeContext(&context)) {
-      fputs("cannot free context", stderr);
-      continue;
-    }
-  }
 
-  if (RimeDestroySession(session_id) == False)
-    err(errno, "cannot destroy session");
+  loop(traits, ui, feed_keys, '\x3');
+
   if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
     err(errno, NULL);
   return EXIT_SUCCESS;
