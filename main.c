@@ -312,6 +312,7 @@ int main(int argc, char *argv[]) {
       continue;
     }
     mask += translate(&c);
+    menu_is_empty = true;
     if (!RimeProcessKey(session_id, c, mask)) {
       if (mask == 0)
         feed_key(c);
@@ -323,7 +324,6 @@ int main(int argc, char *argv[]) {
       continue;
     }
     if (context.menu.num_candidates == 0) {
-      menu_is_empty = true;
       RIME_STRUCT(RimeCommit, commit);
       if (RimeCommitComposition(session_id)) {
         if (!RimeGetCommit(session_id, &commit)) {
