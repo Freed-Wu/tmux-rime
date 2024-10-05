@@ -100,7 +100,7 @@ void callback(char *left_padding, char *left, char *right, char *left_padding2,
 int main(int argc, char *argv[]) {
   int c;
   RIME_STRUCT(RimeTraits, traits);
-  struct UI ui;
+  struct rime_ui_t ui;
   struct termios newattr, oldattr;
   tcgetattr(STDIN_FILENO, &oldattr);
   newattr = oldattr;
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
   }
   printf("\e[%s q", ui.cursor);
 
-  rime_loop(traits, ui, '\x3', feed_keys, callback);
+  RimeLoop(traits, ui, '\x3', feed_keys, callback);
 
   if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
     err(errno, NULL);

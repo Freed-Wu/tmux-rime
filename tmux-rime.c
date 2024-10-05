@@ -20,7 +20,7 @@ static int width(char *str) {
   return wcswidth(wc, wc_len);
 }
 
-static void draw_ui(struct UI ui, RimeContext context,
+static void draw_ui(struct rime_ui_t ui, RimeContext context,
                     void (*callback)(char *, char *, char *, char *, char *,
                                      char *)) {
   char left_padding[DEFAULT_BUFFER_SIZE] = "";
@@ -102,8 +102,8 @@ static int translate(int *c) {
   return mask;
 }
 
-static bool process_key(RimeSessionId session_id, int c, int mask, struct UI ui,
-                        int (*feed_keys)(char *),
+static bool process_key(RimeSessionId session_id, int c, int mask,
+                        struct rime_ui_t ui, int (*feed_keys)(char *),
                         void (*callback)(char *, char *, char *, char *, char *,
                                          char *)) {
   bool menu_is_empty = true;
@@ -146,10 +146,10 @@ static bool process_key(RimeSessionId session_id, int c, int mask, struct UI ui,
  * @param feed_keys handle output
  * @param callback draw UI
  */
-void rime_loop(RimeTraits traits, struct UI ui, char quit,
-               int (*feed_keys)(char *),
-               void (*callback)(char *, char *, char *, char *, char *,
-                                char *)) {
+void RimeLoop(RimeTraits traits, struct rime_ui_t ui, char quit,
+              int (*feed_keys)(char *),
+              void (*callback)(char *, char *, char *, char *, char *,
+                               char *)) {
   setlocale(LC_CTYPE, "");
   RimeSetup(&traits);
   RimeInitialize(&traits);
