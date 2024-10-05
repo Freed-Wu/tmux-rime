@@ -13,8 +13,8 @@ struct UI {
   char *indices[10];
 };
 
-void rime_loop(RimeTraits traits, struct UI ui, int (*feed_keys)(char *),
-               char quit,
+void rime_loop(RimeTraits traits, struct UI ui, char quit,
+               int (*feed_keys)(char *),
                void (*callback)(char *, char *, char *, char *, char *,
                                 char *));
 

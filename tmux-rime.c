@@ -146,8 +146,8 @@ static bool process_key(RimeSessionId session_id, int c, int mask, struct UI ui,
  * @param feed_keys handle output
  * @param callback draw UI
  */
-void rime_loop(RimeTraits traits, struct UI ui, int (*feed_keys)(char *),
-               char quit,
+void rime_loop(RimeTraits traits, struct UI ui, char quit,
+               int (*feed_keys)(char *),
                void (*callback)(char *, char *, char *, char *, char *,
                                 char *)) {
   setlocale(LC_CTYPE, "");

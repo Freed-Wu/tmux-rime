@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
   }
   printf("\e[%s q", ui.cursor);
 
-  rime_loop(traits, ui, feed_keys, '\x3', callback);
+  rime_loop(traits, ui, '\x3', feed_keys, callback);
 
   if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
     err(errno, NULL);
