@@ -1,3 +1,4 @@
+#define _XOPEN_SOURCE
 #include <ctype.h>
 #include <err.h>
 #include <errno.h>
@@ -7,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define __USE_XOPEN
 #include <wchar.h>
 
 #include "tmux-rime.h"
