@@ -81,7 +81,7 @@ int print_help(const struct option *longopts, const char *arg0) {
   return EXIT_SUCCESS;
 }
 
-int feed_keys(char *src) {
+int feed_keys(const char *src) {
 #define TMUX_SEND_KEYS "tmux send-keys "
   char command[DEFAULT_BUFFER_SIZE] = TMUX_SEND_KEYS;
   strcpy(command + sizeof(TMUX_SEND_KEYS) - 1, src);

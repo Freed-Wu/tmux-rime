@@ -100,7 +100,7 @@ static int translate(int *c) {
 }
 
 static bool process_key(RimeSessionId session_id, int c, int mask,
-                        struct rime_ui_t ui, int (*feed_keys)(char *),
+                        struct rime_ui_t ui, int (*feed_keys)(const char *),
                         void (*callback)(char *, char *, char *, char *, char *,
                                          char *)) {
   bool menu_is_empty = true;
@@ -144,7 +144,7 @@ static bool process_key(RimeSessionId session_id, int c, int mask,
  * @param callback draw UI
  */
 void RimeLoop(RimeSessionId session_id, struct rime_ui_t ui, char quit,
-              int (*feed_keys)(char *),
+              int (*feed_keys)(const char *),
               void (*callback)(char *, char *, char *, char *, char *,
                                char *)) {
   bool menu_is_empty = true;
