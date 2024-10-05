@@ -11,7 +11,7 @@
 
 #define DEFAULT_BUFFER_SIZE 1024
 
-static int width(char *str) {
+int RimeWidth(char *str) {
   wchar_t wc[DEFAULT_BUFFER_SIZE] = L"";
   size_t wc_len = mbstowcs(wc, str, strlen(str));
   return wcswidth(wc, wc_len);
@@ -21,7 +21,7 @@ static void draw_ui(struct rime_ui_t ui, RimeContext context,
                     void (*callback)(char *, char *, char *, char *, char *,
                                      char *)) {
   char left_padding[DEFAULT_BUFFER_SIZE] = "";
-  memset(left_padding, ' ', width(ui.left));
+  memset(left_padding, ' ', RimeWidth(ui.left));
   char right[DEFAULT_BUFFER_SIZE] = "";
   char left[DEFAULT_BUFFER_SIZE] = "";
 
@@ -38,7 +38,7 @@ static void draw_ui(struct rime_ui_t ui, RimeContext context,
       strcpy(p, ui.right_sep);
       p += strlen(ui.right_sep);
     } else {
-      int n = width(ui.left_sep);
+      int n = RimeWidth(ui.left_sep);
       memset(p, ' ', n);
       p += n;
     }
@@ -58,13 +58,13 @@ static void draw_ui(struct rime_ui_t ui, RimeContext context,
     strcpy(p, ui.right_sep);
     p += strlen(ui.right_sep);
   } else {
-    int n = width(ui.right_sep);
+    int n = RimeWidth(ui.right_sep);
     memset(p, ' ', n);
     p += n;
   }
   if (context.menu.is_last_page == False && context.menu.num_candidates > 0) {
     strcpy(p, ui.right);
-    p += width(ui.right);
+    p += RimeWidth(ui.right);
   }
   callback(left_padding, left, right,
            context.menu.page_no ? ui.left : left_padding, str, ui.cursor);
