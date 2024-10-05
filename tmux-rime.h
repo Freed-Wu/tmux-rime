@@ -13,7 +13,7 @@ typedef struct rime_ui_t {
   char *indices[10];
 } RimeUI;
 
-void RimeLoop(RimeTraits traits, struct rime_ui_t ui, char quit,
+void RimeLoop(RimeSessionId session_id, struct rime_ui_t ui, char quit,
               int (*feed_keys)(char *),
               void (*callback)(char *, char *, char *, char *, char *, char *));
 

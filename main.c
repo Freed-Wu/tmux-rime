@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <getopt.h>
 #include <libgen.h>
+#include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -191,7 +192,17 @@ int main(int argc, char *argv[]) {
   }
   printf("\e[%s q", ui.cursor);
 
-  RimeLoop(traits, ui, '\x3', feed_keys, callback);
+  setlocale(LC_CTYPE, "");
+  RimeSetup(&traits);
+  RimeInitialize(&traits);
+  RimeSessionId session_id = RimeCreateSession();
+  if (session_id == 0)
+    err(errno, "cannot create session");
+
+  RimeLoop(session_id, ui, '\x3', feed_keys, callback);
+
+  if (RimeDestroySession(session_id) == False)
+    err(errno, "cannot destroy session");
 
   if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
     err(errno, NULL);

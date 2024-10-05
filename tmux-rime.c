@@ -1,8 +1,5 @@
 #define _XOPEN_SOURCE
 #include <ctype.h>
-#include <err.h>
-#include <errno.h>
-#include <locale.h>
 #include <rime_api.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -146,17 +143,10 @@ static bool process_key(RimeSessionId session_id, int c, int mask,
  * @param feed_keys handle output
  * @param callback draw UI
  */
-void RimeLoop(RimeTraits traits, struct rime_ui_t ui, char quit,
+void RimeLoop(RimeSessionId session_id, struct rime_ui_t ui, char quit,
               int (*feed_keys)(char *),
               void (*callback)(char *, char *, char *, char *, char *,
                                char *)) {
-  setlocale(LC_CTYPE, "");
-  RimeSetup(&traits);
-  RimeInitialize(&traits);
-  RimeSessionId session_id = RimeCreateSession();
-  if (session_id == 0)
-    err(errno, "cannot create session");
-
   bool menu_is_empty = true;
   while (true) {
     int mask = 0;
@@ -180,7 +170,4 @@ void RimeLoop(RimeTraits traits, struct rime_ui_t ui, char quit,
     mask += translate(&c);
     menu_is_empty = process_key(session_id, c, mask, ui, feed_keys, callback);
   }
-
-  if (RimeDestroySession(session_id) == False)
-    err(errno, "cannot destroy session");
 }
