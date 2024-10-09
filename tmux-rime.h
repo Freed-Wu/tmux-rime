@@ -13,6 +13,7 @@ typedef struct rime_ui_t {
   char *indices[10];
 } RimeUI;
 
+RimeTraits RimeGetTraits();
 int RimeWidth(char *str);
 void RimeLoop(RimeSessionId session_id, struct rime_ui_t ui, char quit,
               int (*feed_keys)(const char *),

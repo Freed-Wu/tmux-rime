@@ -1,15 +1,66 @@
 #define _XOPEN_SOURCE
 #include <ctype.h>
+#include <dirent.h>
+#include <glib.h>
 #include <rime_api.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+#include <wordexp.h>
 
 #include "tmux-rime.h"
 
 #define DEFAULT_BUFFER_SIZE 1024
+
+RimeTraits RimeGetTraits() {
+  RIME_STRUCT(RimeTraits, traits);
+  wordexp_t exp;
+  char shared_data_dir[256] = "";
+  char *shared_data_dirs[] = {shared_data_dir, "/usr/local/share/rime-data",
+                              "/run/current-system/sw/share/rime-data",
+                              "/sdcard/rime-data"};
+  char *prefix = getenv("PREFIX");
+  if (prefix == NULL)
+    prefix = "/usr";
+  strcpy(shared_data_dirs[0], prefix);
+  strcpy(shared_data_dirs[0] + strlen(shared_data_dirs[0]), "/share/rime-data");
+  for (int i = 0; i < sizeof(shared_data_dirs) / sizeof(shared_data_dirs[0]);
+       i++) {
+    if (wordexp(shared_data_dirs[i], &exp, 0))
+      continue;
+    DIR *dir = opendir(exp.we_wordv[0]);
+    if (dir && closedir(dir) == 0) {
+      traits.shared_data_dir = strdup(exp.we_wordv[0]);
+      wordfree(&exp);
+      break;
+    }
+    wordfree(&exp);
+  }
+  traits.shared_data_dir = "/usr/share/rime-data";
+
+  char *user_data_dirs[] = {"~/.config/ibus/rime", "~/.local/share/fcitx5/rime",
+                            "~/.config/fcitx/rime", "/sdcard/rime"};
+  for (int i = 0; i < sizeof(user_data_dirs) / sizeof(user_data_dirs[0]); i++) {
+    if (wordexp(user_data_dirs[i], &exp, 0))
+      continue;
+    DIR *dir = opendir(exp.we_wordv[0]);
+    if (dir && closedir(dir) == 0) {
+      traits.user_data_dir = strdup(exp.we_wordv[0]);
+      wordfree(&exp);
+      break;
+    }
+    wordfree(&exp);
+  }
+
+  if (wordexp("~/.local/share/tmux/rime", &exp, 0) != 0)
+    traits.log_dir = strdup(exp.we_wordv[0]);
+  wordfree(&exp);
+  g_mkdir_with_parents(traits.log_dir, 0755);
+  traits.distribution_name = "Rime";
+  return traits;
+}
 
 int RimeWidth(char *str) {
   wchar_t wc[DEFAULT_BUFFER_SIZE] = L"";

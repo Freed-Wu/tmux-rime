@@ -100,14 +100,14 @@ void callback(char *left_padding, char *left, char *right, char *left_padding2,
 
 int main(int argc, char *argv[]) {
   int c;
-  RIME_STRUCT(RimeTraits, traits);
-  struct rime_ui_t ui;
-  struct termios newattr, oldattr;
-  tcgetattr(STDIN_FILENO, &oldattr);
-  newattr = oldattr;
-  cfmakeraw(&newattr);
-  if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
-    err(errno, NULL);
+  RimeTraits traits = RimeGetTraits();
+  traits.distribution_code_name = "tmux-rime";
+  traits.distribution_version = "0.0.1";
+  traits.app_name = "rime.tmux-rime";
+  traits.min_log_level = 3;
+  struct rime_ui_t ui = {
+      "<|", "|>", "[",
+      "]",  "6",  {"①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⓪"}};
 
   while ((c = getopt_long(argc, argv, shortopts, longopts, NULL)) != -1) {
     switch (c) {
@@ -190,7 +190,12 @@ int main(int argc, char *argv[]) {
       return -1;
     }
   }
-  printf("\e[%s q", ui.cursor);
+  struct termios newattr, oldattr;
+  tcgetattr(STDIN_FILENO, &oldattr);
+  newattr = oldattr;
+  cfmakeraw(&newattr);
+  if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
+    err(errno, NULL);
 
   setlocale(LC_CTYPE, "");
   RimeSetup(&traits);
@@ -199,7 +204,7 @@ int main(int argc, char *argv[]) {
   if (session_id == 0)
     err(errno, "cannot create session");
 
-  fputs("\e[H", stderr);
+  printf("\e[%s q", ui.cursor);
   RimeLoop(session_id, ui, '\x3', feed_keys, callback);
 
   if (RimeDestroySession(session_id) == False)

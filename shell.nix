@@ -7,6 +7,7 @@ mkShell {
     pkg-config
     stdenv.cc
     librime
+    glib.dev
     xmake
     tmux
   ];

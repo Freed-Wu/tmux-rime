@@ -46,16 +46,24 @@ xmake
 
 ## Configure
 
-```sh
-xmake f --menu
+```tmux
+bind -Tprefix C-^ display-popup -Tㄓ -h4 -w122 -xR -yP tmux-rime
 ```
+
+See
+
+```sh
+tmux-rime --help
+```
+
+to modify `tmux-rime` to `"tmux-rime [...]"`.
 
 ## Install
 
-## tpm
+## AUR
 
-```tmux
-set -g @plugin Freed-Wu/tmux-rime
+```sh
+paru -S tmux-rime
 ```
 
 ## Todo
