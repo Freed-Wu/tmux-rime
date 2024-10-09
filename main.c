@@ -78,6 +78,7 @@ int print_help(const struct option *longopts, const char *arg0) {
 
     o = longopts[++i];
   }
+  puts("");
   return EXIT_SUCCESS;
 }
 
