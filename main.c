@@ -199,6 +199,7 @@ int main(int argc, char *argv[]) {
   if (session_id == 0)
     err(errno, "cannot create session");
 
+  fputs("\e[H", stderr);
   RimeLoop(session_id, ui, '\x3', feed_keys, callback);
 
   if (RimeDestroySession(session_id) == False)

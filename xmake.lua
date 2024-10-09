@@ -259,7 +259,7 @@ option(opt)
 do
     set_category("rime/traits")
     set_description("min log level")
-    set_default("FATAL")
+    set_default("INFO")
     set_values { "INFO", "WARNING", "ERROR", "FATAL" }
     after_check(
         function(option)
@@ -289,6 +289,11 @@ do
     on_config(
         function(target)
             target:set("configvar", "targetfile", target:targetfile())
+        end
+    )
+    after_build(
+        function (target)
+            os.ln(target:targetfile(), "tmux-rime")
         end
     )
 end
