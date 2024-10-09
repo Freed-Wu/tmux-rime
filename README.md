@@ -60,10 +60,16 @@ to modify `tmux-rime` to `"tmux-rime [...]"`.
 
 ## Install
 
-## AUR
+## [AUR](https://aur.archlinux.org/packages/tmux-rime)
 
 ```sh
 paru -S tmux-rime
+```
+
+## [NUR](https://nur.nix-community.org/repos/freed-wu/)
+
+```sh
+nix-env -iA nur.repos.Freed-Wu.tmux-rime
 ```
 
 ## Todo
