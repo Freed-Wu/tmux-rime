@@ -75,6 +75,7 @@ nix-env -iA nur.repos.Freed-Wu.tmux-rime
 ## Todo
 
 <!-- markdownlint-disable-next-line MD033 -->
+
 - Support more special keys: <kbd>Up</kbd>, <kbd>Del</kbd>, <kbd>F1</kbd>, ...
 - Use C library function to do the work of `tmux send-keys` to save the fork
   cost.
