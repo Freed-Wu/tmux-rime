@@ -26,6 +26,12 @@
 [![github/repo-size](https://shields.io/github/repo-size/Freed-Wu/tmux-rime)](https://github.com/Freed-Wu/tmux-rime)
 [![github/v](https://shields.io/github/v/release/Freed-Wu/tmux-rime)](https://github.com/Freed-Wu/tmux-rime)
 
+[![aur/votes](https://img.shields.io/aur/votes/tmux-rime)](https://aur.archlinux.org/packages/tmux-rime)
+[![aur/popularity](https://img.shields.io/aur/popularity/tmux-rime)](https://aur.archlinux.org/packages/tmux-rime)
+[![aur/maintainer](https://img.shields.io/aur/maintainer/tmux-rime)](https://aur.archlinux.org/packages/tmux-rime)
+[![aur/last-modified](https://img.shields.io/aur/last-modified/tmux-rime)](https://aur.archlinux.org/packages/tmux-rime)
+[![aur/version](https://img.shields.io/aur/version/tmux-rime)](https://aur.archlinux.org/packages/tmux-rime)
+
 Rime for tmux.
 
 ![screenshot](https://github.com/user-attachments/assets/2887f6a0-1f4e-4d9b-9550-56268cc308b4)
