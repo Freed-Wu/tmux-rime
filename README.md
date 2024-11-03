@@ -1,6 +1,7 @@
 # tmux-rime
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Freed-Wu/tmux-rime/main.svg)](https://results.pre-commit.ci/latest/github/Freed-Wu/tmux-rime/main)
+[![github/workflow](https://github.com/Freed-Wu/tmux-rime/actions/workflows/main.yml/badge.svg)](https://github.com/Freed-Wu/tmux-rime/actions)
 
 [![github/downloads](https://shields.io/github/downloads/Freed-Wu/tmux-rime/total)](https://github.com/Freed-Wu/tmux-rime/releases)
 [![github/downloads/latest](https://shields.io/github/downloads/Freed-Wu/tmux-rime/latest/total)](https://github.com/Freed-Wu/tmux-rime/releases/latest)
@@ -104,13 +105,16 @@ apt install tmux-rime
 
 ## Todo
 
-<!-- markdownlint-disable-next-line MD033 -->
+<!-- markdownlint-disable MD033 -->
+
 - Support more special keys: <kbd>Up</kbd>, <kbd>Del</kbd>, <kbd>F1</kbd>, ...
 - Use C library function to do the work of `tmux send-keys` to save the fork
   cost.
   [Some experiment](https://github.com/Freed-Wu/vimux.nvim) to wrap tmux to a
   library.
 - Use a daemon to avoid fork a new process every time
+
+<!-- markdownlint-enable MD033 -->
 
 ## Related Projects
 
