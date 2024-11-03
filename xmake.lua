@@ -10,12 +10,4 @@ do
     add_files("*.c")
     add_packages("rime")
     add_packages("glib")
-    after_build(
-        function(target)
-            ---@diagnostic disable: undefined-field
-            -- luacheck: ignore 143
-            os.rm("tmux-rime")
-            os.ln(target:targetfile(), "tmux-rime")
-        end
-    )
 end

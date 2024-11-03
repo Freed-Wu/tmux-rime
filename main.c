@@ -211,7 +211,7 @@ int main(int argc, char *argv[]) {
   if (RimeDestroySession(session_id) == False)
     err(errno, "cannot destroy session");
 
-  if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
+  if (tcsetattr(STDIN_FILENO, TCSANOW, &oldattr) == -1)
     err(errno, NULL);
   return EXIT_SUCCESS;
 }
