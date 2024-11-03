@@ -16,7 +16,7 @@
 #define VERSION "0.0.1"
 #define DEFAULT_BUFFER_SIZE 1024
 
-static char shortopts[] = "hVs:u:l:n:c:v:a:m:";
+static char shortopts[] = "hVs:u:l:n:c:v:a:m:L:R:l:r:1:2:3:4:5:6:7:8:9:0:";
 static struct option longopts[] = {
     {"help", no_argument, NULL, 'h'},
     {"version", no_argument, NULL, 'V'},
