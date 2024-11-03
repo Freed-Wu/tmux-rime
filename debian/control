@@ -1,0 +1,17 @@
+Source: tmux-rime
+Section: utils
+Priority: optional
+Maintainer: Wu, Zhenyu <wuzhenyu@ustc.edu>
+Uploaders: Wu, Zhenyu <wuzhenyu@ustc.edu>
+Build-Depends: debhelper-compat (= 9), libglib2.0-dev, librime-dev, xmake
+Rules-Requires-Root: no
+Standards-Version: 4.6.0
+Homepage: https://github.com/Freed-Wu/tmux-rime
+Vcs-Git: https://github.com/Freed-Wu/tmux-rime
+Vcs-Browser: https://github.com/Freed-Wu/tmux-rime
+
+Package: tmux-rime
+Architecture: amd64 arm64 armel armhf i386 mips64el mipsel powerpc s390x
+Multi-Arch: foreign
+Depends: libglib2.0-0, librime1, tmux, ${misc:Depends}
+Description: Rime for tmux

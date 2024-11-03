@@ -94,6 +94,14 @@ paru -S tmux-rime
 nix-env -iA nur.repos.Freed-Wu.tmux-rime
 ```
 
+## [PPA](https://launchpad.net/~freedwu/+archive/ubuntu/rime)
+
+```sh
+add-apt-repository ppa:freedwu/rime
+apt update
+apt install tmux-rime
+```
+
 ## Todo
 
 <!-- markdownlint-disable-next-line MD033 -->
