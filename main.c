@@ -78,17 +78,18 @@ int print_help(const struct option *longopts, const char *arg0) {
 
     o = longopts[++i];
   }
-  puts("");
+  puts(" [-- [TMUX_SEND_KEYS_ARGUMENTS]...]");
   return EXIT_SUCCESS;
 }
 
-int feed_keys(const char *src) {
 #define TMUX_SEND_KEYS "tmux send-keys "
-  char command[DEFAULT_BUFFER_SIZE] = TMUX_SEND_KEYS;
-  strcpy(command + sizeof(TMUX_SEND_KEYS) - 1, src);
-  int ret = system(command);
+char tmux_send_keys_cmd[DEFAULT_BUFFER_SIZE] = TMUX_SEND_KEYS;
+
+int feed_keys(const char *src) {
+  strcpy(tmux_send_keys_cmd + strlen(tmux_send_keys_cmd), src);
+  int ret = system(tmux_send_keys_cmd);
   if (ret != 0)
-    fprintf(stderr, "cannot run: %s", command);
+    fprintf(stderr, "cannot run: %s", tmux_send_keys_cmd);
   return ret;
 }
 
@@ -191,10 +192,18 @@ int main(int argc, char *argv[]) {
       return -1;
     }
   }
+
+  char *dest = tmux_send_keys_cmd + sizeof(TMUX_SEND_KEYS) - 1;
+  for (; optind < argc; optind++) {
+    dest = stpcpy(dest, argv[optind]);
+    *dest++ = ' ';
+  }
+
   struct termios newattr, oldattr;
   tcgetattr(STDIN_FILENO, &oldattr);
   newattr = oldattr;
   cfmakeraw(&newattr);
+  // `tmux run tmux-rime` will return 25
   if (tcsetattr(STDIN_FILENO, TCSANOW, &newattr) == -1)
     err(errno, NULL);
 

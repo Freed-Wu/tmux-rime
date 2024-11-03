@@ -53,7 +53,17 @@ xmake
 ## Configure
 
 ```tmux
-bind -Tprefix C-^ display-popup -Tㄓ -h4 -w122 -xR -yP tmux-rime
+# tmux 3.3 starts to support display-popup
+if 'v=$(tmux -V) v=${v#*.} v=${v%[[:lower:]]} test $v -gt 2' {
+  set -g popup-border-lines rounded
+  bind -Tprefix C-^ display-popup -Tㄓ -h4 -w122 -xR -yP tmux-rime
+}
+```
+
+Or:
+
+```sh
+tmux split-window -l2 tmux-rime -- -t $TMUX_PANE
 ```
 
 See
@@ -63,6 +73,12 @@ tmux-rime --help
 ```
 
 to modify `tmux-rime` to `"tmux-rime [...]"`.
+
+<!-- markdownlint-disable MD033 -->
+
+Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to exit.
+
+<!-- markdownlint-enable MD033 -->
 
 ## Install
 
