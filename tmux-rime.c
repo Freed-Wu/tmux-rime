@@ -1,6 +1,7 @@
 #include <ctype.h>
 #include <dirent.h>
 #include <glib.h>
+#include <libgen.h>
 #include <rime_api.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -18,15 +19,24 @@
 RimeTraits RimeGetTraits() {
   RIME_STRUCT(RimeTraits, traits);
   wordexp_t exp;
-  char shared_data_dir[256] = "";
-  char *shared_data_dirs[] = {shared_data_dir, "/usr/local/share/rime-data",
-                              "/run/current-system/sw/share/rime-data",
+  char shared_data_dir[256] = "", shared_data_dir2[256] = "";
+  char *shared_data_dirs[] = {shared_data_dir, shared_data_dir2,
                               "/sdcard/rime-data"};
   char *prefix = getenv("PREFIX");
-  if (prefix == NULL)
-    prefix = "/usr";
-  strcpy(shared_data_dirs[0], prefix);
-  strcpy(shared_data_dirs[0] + strlen(shared_data_dirs[0]), "/share/rime-data");
+  if (prefix == NULL) {
+    prefix = getenv("SHELL");
+    ;
+    if (prefix == NULL)
+      prefix = "/bin/sh";
+    prefix = dirname(dirname(prefix));
+  }
+  // prefix=/
+  if (strlen(prefix) == 1)
+    prefix = "";
+  // /usr merge: /usr/bin/sh -> /usr/share/rime-data
+  strcpy(stpcpy(shared_data_dirs[0], prefix), "/share/rime-data");
+  // non /usr merge: /bin/sh -> /usr/share/rime-data
+  strcpy(stpcpy(shared_data_dirs[1], prefix), "/usr/share/rime-data");
   for (int i = 0; i < sizeof(shared_data_dirs) / sizeof(shared_data_dirs[0]);
        i++) {
     if (wordexp(shared_data_dirs[i], &exp, 0))
