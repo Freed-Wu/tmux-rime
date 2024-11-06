@@ -103,6 +103,14 @@ apt update
 apt install tmux-rime
 ```
 
+## [GURU](https://gitweb.gentoo.org/repo/proj/guru.git/log/?h=dev)
+
+```sh
+eselect repository enable guru
+emaint sync -rguru
+emerge -av app-misc/tmux-rime
+```
+
 ## Todo
 
 <!-- markdownlint-disable MD033 -->
