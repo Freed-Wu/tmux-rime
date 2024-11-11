@@ -21,6 +21,7 @@ RimeTraits RimeGetTraits() {
   wordexp_t exp;
   char shared_data_dir[256] = "", shared_data_dir2[256] = "";
   char *shared_data_dirs[] = {shared_data_dir, shared_data_dir2,
+                              "/run/current-system/sw/share/rime-data",
                               "/sdcard/rime-data"};
   char *prefix = getenv("PREFIX");
   if (prefix == NULL) {
