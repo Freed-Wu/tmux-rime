@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Wu, Zhenyu <wuzhenyu@ustc.edu>
 Uploaders: Wu, Zhenyu <wuzhenyu@ustc.edu>
-Build-Depends: debhelper-compat (= 9), libglib2.0-dev, librime-dev, xmake
+Build-Depends: debhelper-compat (= 9), libglib2.0-dev, librime-dev, pkg-config, xmake
 Rules-Requires-Root: no
 Standards-Version: 4.6.0
 Homepage: https://github.com/Freed-Wu/tmux-rime
