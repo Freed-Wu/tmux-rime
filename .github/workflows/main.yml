@@ -22,16 +22,16 @@ jobs:
   deploy-ppa:
     # needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    # if: startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v4
         with:
-          path: tmux-rime-${{github.ref_name}}
+          path: tmux-rime-0.0.3
       - name: Build
         run: |
-          tar vcafC ../tmux-rime-${{github.ref_name}}.tar.gz \
-            tmux-rime-${{github.ref_name}} ..
-          mv ../tmux-rime-${{github.ref_name}}.tar.gz .
+          tar vcafC ../tmux-rime-0.0.3.tar.gz \
+            tmux-rime-0.0.3 ..
+          mv ../tmux-rime-0.0.3.tar.gz .
       - uses: yuezk/publish-ppa-package@main
         with:
           repository: freedwu/rime
