@@ -25,14 +25,13 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: tmux-rime-${{github.ref_name}}
       - name: Build
         run: |
-          n="tmux-rime-$GITHUB_REF_NAME"
-          cd ..
-          mv tmux-rime "$n"
-          tar vcaf ./"$n".tar.gz "$n"
-          mv ./*.tar.* "$n"
-          mv "$n" tmux-rime
+          tar vcafC ../tmux-rime-${{github.ref_name}}.tar.gz \
+            tmux-rime-${{github.ref_name}} ..
+          mv ../tmux-rime-${{github.ref_name}}.tar.gz .
       - uses: yuezk/publish-ppa-package@main
         with:
           repository: freedwu/rime
