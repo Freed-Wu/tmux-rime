@@ -27,6 +27,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: tmux-rime-${{github.ref_name}}
+      - uses: actions/checkout@v4
+        with:
+          repository: xmake-io/xmake-repo
+          path: tmux-rime-${{github.ref_name}}/.xmake/repositories/xmake-repo
       - name: Build
         run: |
           tar vcafC ../tmux-rime-${{github.ref_name}}.tar.gz \

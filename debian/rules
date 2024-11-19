@@ -1,15 +1,14 @@
 #!/usr/bin/env -S make -f
 
 export XMAKE_ROOT=y
-export HOME= $(patsubst %/,%,$(dir $(realpath $(lastword ${MAKEFILE_LIST}))))/debian/.debhelper
+export HOME=$(patsubst %/,%,$(dir $(patsubst %/,%,$(dir $(realpath $(lastword ${MAKEFILE_LIST}))))))/.xmake
 PATH=${HOME}:/bin:/usr/bin:/sbin:/usr/sbin
 
 %:
 	dh $@
 
 override_dh_auto_configure:
-	sed -i s/glib/glib-2.0/g xmake.lua
-	mkdir ${HOME}
+	install -d ${HOME}
 	echo -e "#!${SHELL}\necho I am git" > ${HOME}/git
 	chmod +x ${HOME}/git
 	xmake g --network=private
@@ -17,4 +16,3 @@ override_dh_auto_configure:
 
 override_dh_auto_build:
 	xmake
-	sed -i s/glib-2.0/glib/g xmake.lua
