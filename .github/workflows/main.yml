@@ -35,13 +35,12 @@ jobs:
         run: |
           tar vcafC ../tmux-rime-${{github.ref_name}}.tar.gz \
             tmux-rime-${{github.ref_name}} ..
-          mv ../tmux-rime-${{github.ref_name}}.tar.gz .
       - uses: yuezk/publish-ppa-package@main
         with:
           repository: freedwu/rime
           extra_ppa: xmake-io/xmake
           gpg_private_key: ${{secrets.GPG_PRIVATE_KEY}}
           gpg_passphrase: ${{secrets.GPG_PASSPHRASE}}
-          tarball: ./*.tar.*
+          tarball: ../*.tar.*
           deb_email: ${{secrets.DEB_EMAIL}}
           deb_fullname: freedwu
