@@ -16,6 +16,8 @@
 
 #define DEFAULT_BUFFER_SIZE 1024
 
+RimeApi *rime;
+
 RimeTraits RimeGetTraits() {
   RIME_STRUCT(RimeTraits, traits);
   wordexp_t exp;
@@ -167,7 +169,7 @@ static bool process_key(RimeSessionId session_id, int c, int mask,
                         void (*callback)(char *, char *, char *, char *, char *,
                                          char *)) {
   bool menu_is_empty = true;
-  if (!RimeProcessKey(session_id, c, mask)) {
+  if (!rime->process_key(session_id, c, mask)) {
     if (mask == 0) {
       char src[2] = {c};
       feed_keys(src);
@@ -175,27 +177,27 @@ static bool process_key(RimeSessionId session_id, int c, int mask,
     return menu_is_empty;
   }
   RIME_STRUCT(RimeContext, context);
-  if (!RimeGetContext(session_id, &context)) {
+  if (!rime->get_context(session_id, &context)) {
     fputs("cannot get context", stderr);
     return menu_is_empty;
   }
   if (context.menu.num_candidates == 0) {
     RIME_STRUCT(RimeCommit, commit);
-    if (RimeCommitComposition(session_id)) {
-      if (!RimeGetCommit(session_id, &commit)) {
+    if (rime->commit_composition(session_id)) {
+      if (!rime->get_commit(session_id, &commit)) {
         fputs("cannot get commit", stderr);
         return menu_is_empty;
       }
       feed_keys(commit.text);
     }
-    if (!RimeFreeCommit(&commit)) {
+    if (!rime->free_commit(&commit)) {
       fputs("cannot free commit", stderr);
       return menu_is_empty;
     }
   } else
     menu_is_empty = false;
   draw_ui(ui, context, callback);
-  if (!RimeFreeContext(&context)) {
+  if (!rime->free_context(&context)) {
     fputs("cannot free context", stderr);
     return menu_is_empty;
   }

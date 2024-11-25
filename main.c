@@ -16,6 +16,8 @@
 #define VERSION "0.0.2"
 #define DEFAULT_BUFFER_SIZE 1024
 
+extern RimeApi *rime;
+
 static char shortopts[] = "hVs:u:l:n:c:v:a:m:L:R:l:r:1:2:3:4:5:6:7:8:9:0:";
 static struct option longopts[] = {
     {"help", no_argument, NULL, 'h'},
@@ -102,6 +104,7 @@ void callback(char *left_padding, char *left, char *right, char *left_padding2,
 
 int main(int argc, char *argv[]) {
   int c;
+  rime = rime_get_api();
   RimeTraits traits = RimeGetTraits();
   traits.distribution_code_name = "tmux-rime";
   traits.distribution_version = "0.0.1";
@@ -208,16 +211,16 @@ int main(int argc, char *argv[]) {
     err(errno, NULL);
 
   setlocale(LC_CTYPE, "");
-  RimeSetup(&traits);
-  RimeInitialize(&traits);
-  RimeSessionId session_id = RimeCreateSession();
+  rime->setup(&traits);
+  rime->initialize(&traits);
+  RimeSessionId session_id = rime->create_session();
   if (session_id == 0)
     err(errno, "cannot create session");
 
   printf("\e[%s q", ui.cursor);
   RimeLoop(session_id, ui, '\x3', feed_keys, callback);
 
-  if (RimeDestroySession(session_id) == False)
+  if (rime->destroy_session(session_id) == False)
     err(errno, "cannot destroy session");
 
   if (tcsetattr(STDIN_FILENO, TCSANOW, &oldattr) == -1)
