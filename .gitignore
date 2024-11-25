@@ -1,4 +1,5 @@
+compile_commands.json
+
 .xmake/
 build/
 .cache/
-tmux-rime
