@@ -1,16 +1,7 @@
 #ifndef TMUX_RIME_H
 #define TMUX_RIME_H 1
-
-#include <sys/cdefs.h>
-
-#include "config.h"
-
-#ifdef RIME_API_DEPRECATED
-#include <rime_api_deprecated.h>
-#else
 #include <rime_api.h>
-#endif
-
+#include <sys/cdefs.h>
 __BEGIN_DECLS
 
 typedef struct rime_ui_t {
