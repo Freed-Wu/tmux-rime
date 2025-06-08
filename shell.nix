@@ -4,11 +4,12 @@ with pkgs;
 mkShell {
   name = "tmux-rime";
   buildInputs = [
-    pkg-config
-    stdenv.cc
-    librime
-    glib.dev
     xmake
+    pkg-config
+
+    librime
+    glib
+
     tmux
   ];
   # https://github.com/NixOS/nixpkgs/issues/314313#issuecomment-2134252094
